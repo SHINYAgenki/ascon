@@ -18,6 +18,6 @@
 4. ファイナライズ：認証タグを生成
 
 ## 参考資料
-[Ascon v1.2 Submission to NIST](https://csrc.nist.gov/CSRC/media/Projects/lightweight-cryptography/documents/round-2/spec-doc-rnd2/ascon-spec-round2.pdf)
+[Ascon v1.2 Submission to NIST](https://csrc.nist.gov/CSRC/media/Projects/lightweight-cryptography/documents/round-2/spec-doc-rnd2/ascon-spec-round2.pdf)　　
 [Ascon Lightweight Cryptography](https://ascon.isec.tugraz.at/index.html)
 

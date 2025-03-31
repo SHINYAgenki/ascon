@@ -3,14 +3,6 @@
 
 using namespace std;
 
-/*
-    用語メモ
-    ・Ascon：認証付き暗号(AEAD)の一種暗号化と同時に改ざん検出(これを認証タグというらしい)もしてくれる、軽量でセキュアな暗号方式
-    ・Asconの暗号化の流れ
-    ・ノンス：一度だけ使う数（今回は固定値でOK）
-    ・
-*/
-
 // typedefでstate_t型を定義（arrayの代替）
 typedef uint64_t state_t[5];
 

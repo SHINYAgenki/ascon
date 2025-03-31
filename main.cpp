@@ -3,8 +3,7 @@
 
 using namespace std;
 
-// typedefでstate_t型を定義（arrayの代替）
-typedef uint64_t state_t[5];
+typedef uint64_t state_t[5]; // S[0], S[1], ..., S[4]
 
 // 固定IV（Ascon-128）
 #define IV 0x80400c0600000000ULL
@@ -49,27 +48,30 @@ void ascon_encrypt(const uint64_t key[2], const uint64_t nonce[2],
                    const uint64_t plaintext, uint64_t &ciphertext, uint64_t &tag) {
     state_t S;
 
-    // Initialization: IV || K || N
-    S[0] = IV;
-    S[1] = key[0];
-    S[2] = key[1];
-    S[3] = nonce[0];
-    S[4] = nonce[1];
+    // 状態の初期化
+    S[0] = IV; // 固定の定数(Ascon仕様で定義)
+    S[1] = key[0]; // 鍵の上位64ビット
+    S[2] = key[1]; // 鍵の下位64ビット
+    S[3] = nonce[0]; // ノンスの上位64ビット
+    S[4] = nonce[1]; // ノンスの下位64ビット
 
-    permutation(S, 12);
-    S[3] ^= key[0];
+    permutation(S, 12); // 12ラウンドの変換（pa）
+    S[3] ^= key[0]; // 鍵をもう一度ミックス
     S[4] ^= key[1];
+
+    // ここまででステートSは、鍵とノンスによってランダム性のある状態になっているらしい
 
     // Associated Data 処理（省略）
     S[4] ^= 0x01;  // ドメインセパレーション
 
-    // Plaintext (56bit) の Encryption
+    // ここから平文の暗号化
     uint64_t pt_masked = plaintext & 0x00FFFFFFFFFFFFFFULL;
-    S[0] ^= pt_masked;
-    ciphertext = S[0];
-    permutation(S, 6);
+    S[0] ^= pt_masked; // ステートとXOR → これが暗号化の本質らしい
+    ciphertext = S[0]; // 暗号文としてそのまま出力
+    permutation(S, 6); // ステートを6ラウンドで更新（認証タグの準備）
+    // 暗号文 = S[0] XOR 平文 = 暗号状態と平文の混合結果
 
-    // Finalization
+    // ファイナライズ（認証タグ）
     S[1] ^= key[0];
     S[2] ^= key[1];
     permutation(S, 12);

@@ -17,4 +17,7 @@
 3. 平文処理：暗号化して暗号文に変換
 4. ファイナライズ：認証タグを生成
 
+## 参考資料
+[Ascon v1.2 Submission to NIST]url(file:///Users/shinyagenki/Downloads/ascon-spec-final.pdf)
+[Ascon Lightweight Cryptography]url(https://ascon.isec.tugraz.at/index.html)
 
